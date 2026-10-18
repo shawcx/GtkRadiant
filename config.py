@@ -268,6 +268,9 @@ class Config:
             env.ParseConfig( 'pkg-config zlib --cflags --libs' )
 
         env.Append( CCFLAGS = baseflags )
+        # the C sources predate C23, which GCC 15 defaults to: bool is a keyword there,
+        # and an empty parameter list declares a function without arguments
+        env.Append( CFLAGS = [ '-std=gnu17' ] )
         # GTK3 deprecates GtkTable, GtkHBox/GtkVBox, GtkColorSelection, etc. that radiant still uses
         env.Append( CCFLAGS = [ '-Wno-deprecated-declarations' ] )
         env.Append( CXXFLAGS = [ '-fvisibility-inlines-hidden' ] )
